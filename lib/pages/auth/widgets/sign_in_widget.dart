@@ -1,6 +1,7 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seller_app_fic/Data/DataResources/auth_local_datasources.dart';
+import 'package:seller_app_fic/Data/DataResources/firebase_messaging_remote_datasources.dart';
 import 'package:seller_app_fic/pages/Dashboard/seller_dashboard.dart';
 
 import '../../../Data/Models/request/login_request_model.dart';
@@ -136,10 +137,15 @@ class SignInWidgetState extends State<SignInWidget> {
                     orElse: () {},
                     loaded: (data) async {
                       await AuthLocalDatasource().saveAuthData(data);
-                      Navigator.pushAndRemoveUntil(context,
-                       MaterialPageRoute(builder: (context){
-                        return const SellerDashboard();
-                       }), (route) => false);
+                      // Navigator.pushAndRemoveUntil(context,
+                      //  MaterialPageRoute(builder: (context){
+                      //   return const SellerDashboard();
+                      //  }), (route) => false);
+                      await FirebaseMeassagingRemoteDatasource().initNotification();
+                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                        builder: (context){
+                          return SellerDashboard();
+                        }), (route) => false);
                     },
                     error: (message) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
