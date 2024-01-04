@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:seller_app_fic/Data/DataResources/auth_local_datasources.dart';
+import 'package:seller_app_fic/Data/DataResources/auth_remote_datasources.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -34,6 +36,11 @@ class FirebaseMeassagingRemoteDatasource {
     (NotificationResponse notificationResponse) async {});
     final fcmtoken = await _firebaseMessaging.getToken();
     print('Token: $fcmtoken');
+
+    if (await AuthLocalDatasource().isLogin()) {
+      AuthRemoteDatasource().updateFcmtoken(fcmtoken ?? '');
+    }
+
     FirebaseMessaging.instance.getInitialMessage();
     FirebaseMessaging.onMessage.listen((message) {
       print(message.notification?.body);
