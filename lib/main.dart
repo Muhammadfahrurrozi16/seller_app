@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:seller_app_fic/bloc/Products/products_bloc.dart';
 import 'package:seller_app_fic/bloc/Register/register_bloc.dart';
 import 'package:seller_app_fic/bloc/addImage/add_image_bloc.dart';
@@ -11,9 +12,13 @@ import 'package:seller_app_fic/utilis/light_themes.dart';
 import 'bloc/Login/login_bloc.dart';
 import 'bloc/Logout/logout_bloc.dart';
 import 'data/DataResources/auth_local_datasources.dart';
+import 'firebase_options.dart';
 
-
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
